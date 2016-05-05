@@ -1,6 +1,6 @@
-%vagrant_dir %{_datadir}/%{name}
+%vagrant_dir %{_datadir}/%{pkg_name}
 
-%vagrant_plugin_conf_dir %{_sharedstatedir}/%{name}
+%vagrant_plugin_conf_dir %{_sharedstatedir}/%{pkg_name}
 %vagrant_plugin_conf %{vagrant_plugin_conf_dir}/plugins.json
 
 # Common locations for Vagrant plugin gems

@@ -15,7 +15,7 @@ d=/etc/rpm; echo $d)
 
 Name: %{?scl_prefix}vagrant
 Version: 1.8.1
-Release: 2%{?dist}
+Release: 5%{?dist}
 Summary: Build and distribute virtualized development environments
 Group: Development/Languages
 License: MIT
@@ -117,7 +117,7 @@ BuildRequires: %{?scl_prefix}rubygem(hashicorp-checkpoint)
 BuildRequires: %{?scl_prefix}rubygem(log4r)
 BuildRequires: %{?scl_prefix}rubygem(net-ssh)
 BuildRequires: %{?scl_prefix}rubygem(net-scp)
-BuildRequires: %{?scl_prefix}rubygem(nokogiri)
+BuildRequires: %{?scl_prefix_ror}rubygem(nokogiri)
 BuildRequires: %{?scl_prefix_ror}rubygem(i18n)
 BuildRequires: %{?scl_prefix_ror}rubygem(erubis)
 BuildRequires: %{?scl_prefix}rubygem(rb-inotify)
@@ -290,9 +290,10 @@ getent group vagrant >/dev/null || groupadd -r vagrant
 %{vagrant_dir}/vagrant-spec.config.example.rb
 
 %changelog
-* Tue May 03 2016 Tomas Hrcka <thrcka@redhat.com> - 1.8.1-2
+* Tue May 03 2016 Tomas Hrcka <thrcka@redhat.com> - 1.8.1-5
 - New upstream release 
-
+- use ?scl_prefix_ror for nokogiri gem
+ 
 * Tue Sep 08 2015 Josef Stribny <jstribny@redhat.com> - 1.7.4-3
 - Remove locking of C extentions versions
 
