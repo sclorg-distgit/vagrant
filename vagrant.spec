@@ -6,7 +6,7 @@
 # Try to get bash completion dir, but provide fallback when the autodetection fails.
 %global bashcompletion_dir %(pkg-config --variable=completionsdir bash-completion 2> /dev/null || echo %{_root_sysconfdir}/bash_completion.d)
 
-%global vagrant_spec_commit c0dafc996165bf1628b672dd533f1858ff66fe4a
+%global vagrant_spec_commit 9bba7e1228379c0a249a06ce76ba8ea7d276afbe
 
 # Determine the right place for RPM macros
 # /etc/rpm for RHEL 6 compatibility
@@ -14,8 +14,8 @@
 d=/etc/rpm; echo $d)
 
 Name: %{?scl_prefix}vagrant
-Version: 1.7.4
-Release: 3%{?dist}
+Version: 1.8.1
+Release: 5%{?dist}
 Summary: Build and distribute virtualized development environments
 Group: Development/Languages
 License: MIT
@@ -59,11 +59,18 @@ Source4: macros.vagrant
 }
 
 
-Patch0: vagrant-1.7.4-fix-dependencies.patch
+Patch0: vagrant-1.8.1-fix-dependencies.patch
 
 # Install plugins in isolation
 # https://github.com/mitchellh/vagrant/pull/5877
-Patch1: vagrant-1.7.4-install-plugins-in-isolation.patch
+Patch1: vagrant-1.8.1-disable-winrm-tests.patch
+# Don't use biosdevname if missing in Fedora guest
+Patch3: vagrant-1.7.4-dont-require-biosdevname-fedora.patch
+
+# Fixes vagrant plugin install error with recent RubyGems.
+# https://bugzilla.redhat.com/show_bug.cgi?id=1330208
+# https://github.com/mitchellh/vagrant/pull/7198
+Patch4: vagrant-1.8.1-Fixes-specification-rb-undefined-method-group-by-for-nilclass.patch
 
 # Until we have scl-utils that generates this
 Requires: %{?scl_prefix}runtime
@@ -110,7 +117,7 @@ BuildRequires: %{?scl_prefix}rubygem(hashicorp-checkpoint)
 BuildRequires: %{?scl_prefix}rubygem(log4r)
 BuildRequires: %{?scl_prefix}rubygem(net-ssh)
 BuildRequires: %{?scl_prefix}rubygem(net-scp)
-BuildRequires: %{?scl_prefix}rubygem(nokogiri)
+BuildRequires: %{?scl_prefix_ror}rubygem(nokogiri)
 BuildRequires: %{?scl_prefix_ror}rubygem(i18n)
 BuildRequires: %{?scl_prefix_ror}rubygem(erubis)
 BuildRequires: %{?scl_prefix}rubygem(rb-inotify)
@@ -148,6 +155,7 @@ Documentation for %{pkg_name}.
 
 %patch0 -p1
 %patch1 -p1
+%patch4 -p1
 
 %build
 
@@ -282,6 +290,10 @@ getent group vagrant >/dev/null || groupadd -r vagrant
 %{vagrant_dir}/vagrant-spec.config.example.rb
 
 %changelog
+* Tue May 03 2016 Tomas Hrcka <thrcka@redhat.com> - 1.8.1-5
+- New upstream release 
+- use ?scl_prefix_ror for nokogiri gem
+ 
 * Tue Sep 08 2015 Josef Stribny <jstribny@redhat.com> - 1.7.4-3
 - Remove locking of C extentions versions
 
