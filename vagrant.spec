@@ -15,7 +15,7 @@ d=/etc/rpm; echo $d)
 
 Name: %{?scl_prefix}vagrant
 Version: 1.8.1
-Release: 5%{?dist}
+Release: 6%{?dist}
 Summary: Build and distribute virtualized development environments
 Group: Development/Languages
 License: MIT
@@ -290,6 +290,9 @@ getent group vagrant >/dev/null || groupadd -r vagrant
 %{vagrant_dir}/vagrant-spec.config.example.rb
 
 %changelog
+* Thu May 19 2016 Dominic Cleal <dominic@cleal.org> - 1.8.1-6
+- remove bindir from Ruby path in vagrant_plugin macros
+
 * Tue May 03 2016 Tomas Hrcka <thrcka@redhat.com> - 1.8.1-5
 - New upstream release 
 - use ?scl_prefix_ror for nokogiri gem
