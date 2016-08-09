@@ -15,7 +15,7 @@ d=/etc/rpm; echo $d)
 
 Name: %{?scl_prefix}vagrant
 Version: 1.8.1
-Release: 6%{?dist}
+Release: 7%{?dist}
 Summary: Build and distribute virtualized development environments
 Group: Development/Languages
 License: MIT
@@ -68,9 +68,9 @@ Patch1: vagrant-1.8.1-disable-winrm-tests.patch
 Patch3: vagrant-1.7.4-dont-require-biosdevname-fedora.patch
 
 # Fixes vagrant plugin install error with recent RubyGems.
-# https://bugzilla.redhat.com/show_bug.cgi?id=1330208
-# https://github.com/mitchellh/vagrant/pull/7198
-Patch4: vagrant-1.8.1-Fixes-specification-rb-undefined-method-group-by-for-nilclass.patch
+# https://github.com/mitchellh/vagrant/pull/7505
+# https://bugzilla.redhat.com/show_bug.cgi?id=1365305
+Patch4: vagrant-1.8.5-fix-plugin-install-with-recent-rubygems.patch
 
 # Until we have scl-utils that generates this
 Requires: %{?scl_prefix}runtime
@@ -290,6 +290,9 @@ getent group vagrant >/dev/null || groupadd -r vagrant
 %{vagrant_dir}/vagrant-spec.config.example.rb
 
 %changelog
+* Tue Aug 09 2016 Pavel Valena <pvalena@redhat.com> - 1.8.1-7
+- Fix plugin installation with recent RubyGems (rhbz#1365305)
+
 * Thu May 19 2016 Dominic Cleal <dominic@cleal.org> - 1.8.1-6
 - remove bindir from Ruby path in vagrant_plugin macros
 
